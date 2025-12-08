@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta para Ti 💌</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #8b4513;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* Estilos del sobre */
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 40px auto;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+        
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #f8e8d0;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 2;
+            transition: all 0.8s ease;
+            overflow: hidden;
+        }
+        
+        .envelope.flap {
+            background: #e8d8b8;
+            clip-path: polygon(0% 0%, 100% 0%, 50% 50%);
+            z-index: 3;
+            transform-origin: top;
+        }
+        
+        .envelope.body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .envelope.front {
+            background: linear-gradient(135deg, #e8d8b8 0%, #d4c4a4 100%);
+            border: 2px solid #8b4513;
+        }
+        
+        .heart {
+            color: #ff6b6b;
+            font-size: 40px;
+            margin-top: 30px;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        .click-text {
+            color: #8b4513;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        
+        /* Estilos de la carta */
+        .letter {
+            background: #fffef0;
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border: 1px solid #e8d8b8;
+            display: none;
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s ease;
+            text-align: left;
+            line-height: 1.8;
+        }
+        
+        .letter.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .letter-header {
+            border-bottom: 2px solid #e8d8b8;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .date {
+            color: #8b4513;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        .letter-content {
+            font-size: 1.1em;
+            color: #333;
+        }
+        
+        .letter-content p {
+            margin-bottom: 20px;
+            text-indent: 30px;
+        }
+        
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: #8b4513;
+        }
+        
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            transform: rotate(15deg);
+            border: 2px dashed white;
+        }
+        
+        /* Animaciones */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .envelope-open .envelope.flap {
+            transform: rotateX(180deg);
+            transition-delay: 0.3s;
+        }
+        
+        .envelope-open .envelope.front {
+            transform: translateY(-100px);
+            opacity: 0;
+            transition-delay: 0.2s;
+        }
+        
+        /* Botón de cerrar */
+        .close-btn {
+            background: #8b4513;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .close-btn:hover {
+            background: #a0522d;
+        }
+        
+        .message {
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Una Carta Especial 💌</h1>
+        
+        <div class="envelope-container" id="envelope">
+            <div class="envelope flap"></div>
+            <div class="envelope front body">
+                <div class="heart">❤️</div>
+                <p class="click-text">Haz clic para abrir la carta</p>
+            </div>
+        </div>
+        
+        <div class="letter" id="letter">
+            <div class="stamp">AMOR<br>A DISTANCIA</div>
+            <div class="letter-header">
+                <h2>Para la persona más especial</h2>
+                <div class="date">Un día cualquiera que te extraño</div>
+            </div>
+            
+            <div class="letter-content">
+                <p>Mi amor,</p>
+                
+                <p>Aunque los kilómetros nos separen, cada latido de mi corazón te busca incansablemente. Hay días en que la distancia pesa más que otros, pero siempre recuerdo que cada segundo que pasa nos acerca al momento en que finalmente estaremos juntos.</p>
+                
+                <p>Las llamadas telefónicas se han convertido en mi ritual favorito, tu voz es la melodía que alegra mis días. Y aunque a veces la conexión falle, nunca falla el amor que siento por ti. Guardamos recuerdos como tesoros: las fotos que intercambiamos, los mensajes de buenos días, las canciones que compartimos...</p>
+                
+                <p>Esta distancia no es un obstáculo, sino un puente que estamos construyendo con paciencia, confianza y mucho amor. Cada despedida temporal duele, pero pienso que así valoraremos más cada abrazo cuando por fin nos reunamos.</p>
+                
+                <p>Mientras tanto, te llevo conmigo en cada pensamiento, en cada sueño, en cada deseo. El mapa dice que estamos lejos, pero mi corazón insiste en que nunca te has ido.</p>
+                
+                <p>Te amo más de lo que las palabras pueden expresar y más de lo que la distancia puede medir.</p>
+            </div>
+            
+            <div class="signature">
+                Con todo mi amor,<br>
+                Quien te espera
+            </div>
+        </div>
+        
+        <button class="close-btn" id="closeBtn" style="display: none;">Cerrar Carta</button>
+        <p class="message">La distancia no es más que una prueba para un amor verdadero</p>
+    </div>
+    
+    <script>
+        const envelope = document.getElementById('envelope');
+        const letter = document.getElementById('letter');
+        const closeBtn = document.getElementById('closeBtn');
+        const envelopeContainer = document.querySelector('.envelope-container');
+        
+        envelope.addEventListener('click', function() {
+            // Animación del sobre
+            envelopeContainer.classList.add('envelope-open');
+            
+            // Mostrar la carta después de un breve retraso
+            setTimeout(() => {
+                letter.classList.add('show');
+                closeBtn.style.display = 'block';
+                envelope.style.cursor = 'default';
+            }, 800);
+        });
+        
+        closeBtn.addEventListener('click', function() {
+            // Ocultar la carta
+            letter.classList.remove('show');
+            
+            // Restaurar el sobre
+            setTimeout(() => {
+                envelopeContainer.classList.remove('envelope-open');
+                closeBtn.style.display = 'none';
+                envelope.style.cursor = 'pointer';
+            }, 300);
+        });
+        
+        // Efecto adicional al pasar el mouse sobre el sobre
+        envelope.addEventListener('mouseenter', function() {
+            if (!envelopeContainer.classList.contains('envelope-open')) {
+                envelopeContainer.style.transform = 'scale(1.05)';
+            }
+        });
+        
+        envelope.addEventListener('mouseleave', function() {
+            envelopeContainer.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
